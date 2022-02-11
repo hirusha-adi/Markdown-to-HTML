@@ -1,9 +1,24 @@
 #!/usr/bin/python3
+
+__author__ = "@hirusha-adi"
+__version__ = "v1.0"
+
 import argparse
 import os
 import sys
 
 import markdown
+
+__HELP__ = r"""usage: markdown2html [-h] [-i INPUT] [-o OUTPUT] [-a]
+
+options:
+  -h, --help            show this help message and exit
+  -i INPUT, --input INPUT
+                        input file name/text
+  -o OUTPUT, --output OUTPUT
+                        output file name
+  -a, --auto            increase output verbosity
+"""
 
 
 def getArgs():
@@ -13,6 +28,10 @@ def getArgs():
     parser.add_argument("-a", "--auto", help="increase output verbosity",
                         action="store_true")
     args = parser.parse_args()
+
+    if (args.input is None) and (args.output is None) and (args.auto is False):
+        sys.exit(__HELP__)
+
     all_args = {
         "input_file": args.input,
         "output_file": args.output,
@@ -42,7 +61,7 @@ def main():
             with open(newname, "w", encoding="utf-8") as fw:
                 fw.write(converted)
 
-    if not(input_file is None):
+    elif not(input_file is None):
         if str(input_file).strip().lower().endswith(".md"):
             input_file_path = os.path.join(os.getcwd(), input_file)
             with open(input_file_path, "r", encoding="utf-8") as fr1:
